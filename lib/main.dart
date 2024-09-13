@@ -13,7 +13,7 @@ class NotesApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
         //to change brightness color
-        // scaffoldBackgroundColor: Colors.grey,
+        scaffoldBackgroundColor: const Color(0XFF383838),
       ),
       home: const NotesView(),
     );
