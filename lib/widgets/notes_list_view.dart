@@ -9,7 +9,7 @@ class CustomListView extends StatelessWidget {
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) => const CustomNoteItem(),
-      separatorBuilder: (context, index) => const SizedBox(height: 20),
+      separatorBuilder: (context, index) => const SizedBox(height: 10),
       itemCount: 5,
     );
   }
