@@ -27,7 +27,7 @@ class _AddNoteFormState extends State<AddNoteForm> {
         children: [
           CustomTextFormField(
             hint: "Title",
-            onSaved: (title) {
+            onChanged: (title) {
               this.title = title;
             },
           ),
@@ -35,7 +35,7 @@ class _AddNoteFormState extends State<AddNoteForm> {
           CustomTextFormField(
             hint: "Content",
             maxLines: 5,
-            onSaved: (subTitle) {
+            onChanged: (subTitle) {
               this.subTitle = subTitle;
             },
           ),

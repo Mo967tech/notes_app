@@ -16,7 +16,7 @@ class CustomNoteItem extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const EditNoteView(),
+          builder: (context) => EditNoteView(note: note),
         ),
       ),
       child: Container(
@@ -55,8 +55,8 @@ class CustomNoteItem extends StatelessWidget {
               ),
               trailing: IconButton(
                 padding: const EdgeInsets.only(bottom: 35),
-                onPressed: () async {
-                  await note.delete();
+                onPressed: () {
+                  note.delete();
                   BlocProvider.of<NotesCubit>(context).fetchAllNotes();
                 },
                 icon: const Icon(
