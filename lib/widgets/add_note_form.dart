@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:notes_app/models/note_model.dart';
+import 'package:notes_app/widgets/colors_list_view.dart';
 import 'package:notes_app/widgets/custom_button.dart';
 import 'package:notes_app/widgets/custom_text_field.dart';
 import 'package:intl/intl.dart';
@@ -39,28 +40,20 @@ class _AddNoteFormState extends State<AddNoteForm> {
               this.subTitle = subTitle;
             },
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 25),
+          const ColorsListView(),
+          const SizedBox(height: 25),
           BlocBuilder<AddNoteCubit, AddNoteState>(
             builder: (context, state) {
               return CustomButton(
                 isLoading: state is AddNoteLoading ? true : false,
                 onTap: () {
-                  if (formKey.currentState!.validate()) {
-                    formKey.currentState!.save();
-                    DateTime currentDate = DateTime.now();
-                    var formatedCurrentDate =
-                        DateFormat("MMMM dd,yyyy").format(currentDate);
-                    var note = NoteModel(
-                      title: title!,
-                      content: subTitle!,
-                      date: formatedCurrentDate,
-                      color: Colors.green.value,
-                    );
-                    BlocProvider.of<AddNoteCubit>(context).addNote(note);
+                  if (isValidated()) {
+                    save();
+                    var formatedCurrentDate = formatDate(DateTime.now());
+                    addNote(context, formatedCurrentDate);
                   } else {
-                    setState(
-                      () => autovalidateMode = AutovalidateMode.always,
-                    );
+                    displayAutoValidateMode();
                   }
                 },
               );
@@ -70,4 +63,32 @@ class _AddNoteFormState extends State<AddNoteForm> {
       ),
     );
   }
+
+  void displayAutoValidateMode() => setState(
+        () => autovalidateMode = AutovalidateMode.always,
+      );
+
+  void save() => formKey.currentState!.save();
+
+  bool isValidated() => formKey.currentState!.validate();
+
+  void addNote(BuildContext context, String formatedCurrentDate) =>
+      BlocProvider.of<AddNoteCubit>(context).addNote(
+        createNote(
+          title: title!,
+          content: subTitle!,
+          date: formatedCurrentDate,
+          color: Colors.green.value,
+        ),
+      );
+
+  String formatDate(DateTime time) => DateFormat("MMMM dd,yyyy").format(time);
+
+  NoteModel createNote({
+    required String title,
+    required String content,
+    required String date,
+    required int color,
+  }) =>
+      NoteModel(title: title, content: content, date: date, color: color);
 }
