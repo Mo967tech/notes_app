@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/cubits/add_note_cubit/add_note_cubit.dart';
 
 class ColorItem extends StatelessWidget {
   final bool isActive;
@@ -15,20 +17,27 @@ class ColorItem extends StatelessWidget {
     return isActive
         ? CircleAvatar(
             backgroundColor: Colors.white,
-            radius: 30,
+            radius: 38,
             child: CircleAvatar(
-              radius: 25,
+              radius: 30,
               backgroundColor: color,
             ),
           )
         : CircleAvatar(
-            radius: 30,
+            radius: 38,
             backgroundColor: color,
           );
   }
 }
 
 class ColorsListView extends StatefulWidget {
+  final List<Color> colors = const [
+    Color(0XFFEBBAB9),
+    Color(0XFFC9C5BA),
+    Color(0XFF97B1A6),
+    Color(0XFF698996),
+    Color(0XFF407076),
+  ];
   const ColorsListView({super.key});
 
   @override
@@ -36,32 +45,29 @@ class ColorsListView extends StatefulWidget {
 }
 
 class _ColorsListViewState extends State<ColorsListView> {
-  int currentIndex = 0;
-  List<Color> colors = const [
-    Color(0XFF0A2463),
-    Color(0XFF3E92CC),
-    Color(0XFFFFFAFF),
-    Color(0XFFD8315B),
-    Color(0XFF1E1B18),
-  ];
+  int? currentIndex;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 60,
+      height: 38 * 2,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return GestureDetector(
             child: ColorItem(
               isActive: currentIndex == index,
-              color: colors[index],
+              color: widget.colors[index],
             ),
-            onTap: () => setState(() => currentIndex = index),
+            onTap: () {
+              BlocProvider.of<AddNoteCubit>(context).noteColor =
+                  widget.colors[index];
+              setState(() => currentIndex = index);
+            },
           );
         },
         separatorBuilder: (context, index) => const SizedBox(width: 8),
-        itemCount: colors.length,
+        itemCount: widget.colors.length,
       ),
     );
   }

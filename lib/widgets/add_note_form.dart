@@ -50,8 +50,7 @@ class _AddNoteFormState extends State<AddNoteForm> {
                 onTap: () {
                   if (isValidated()) {
                     save();
-                    var formatedCurrentDate = formatDate(DateTime.now());
-                    addNote(context, formatedCurrentDate);
+                    addNote(context, formatDate(DateTime.now()));
                   } else {
                     displayAutoValidateMode();
                   }
